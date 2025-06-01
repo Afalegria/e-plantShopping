@@ -10,9 +10,9 @@ const CartItem = ({ onContinueShopping }) => {
   // Calculate total amount for all products in the cart
   const calculateTotalAmount = () => {
     let totalCost = 0;
-    cart.foreach((item) => {
+    cart.forEach((item) => {
         var cantidad = item.quantity
-        var costo = parseFloat(item.cost.subtstring(1))
+        var costo = parseFloat(item.cost.substring(1))
         totalCost += cantidad * costo
     });
     return totalCost;
@@ -35,19 +35,23 @@ const CartItem = ({ onContinueShopping }) => {
         dispatch(updateQuantity({name: item.name, quantity: item.quantity - 1} ));
     }
     else {
-        dispatch(removeItem(item))};
+        dispatch(removeItem(item.name))};
   };
 
   const handleRemove = (item) => {
-    dispatch(removeItem(item))
+    dispatch(removeItem(item.name))
   };
 
   // Calculate total cost based on quantity for an item
   const calculateTotalCost = (item) => {
-    let totalCost = item.quantity * parseFloat(item.cost.subtstring(1))
+    // Asegúrate de que item.cost sea un string y tenga el formato esperado (ej: "$15")
+    if (typeof item.cost === 'string' && item.cost.startsWith('$')) {
+      const cost = parseFloat(item.cost.substring(1)); // Corregido: substring y parseo a float
+      return (item.quantity * cost).toFixed(2); // Retorna el valor calculado con dos decimales
+    }
+    console.warn(`El costo del item "${item.name}" no tiene el formato esperado: ${item.cost}`);
+    return '0.00'; // Retorna un valor por defecto si el formato es incorrecto
   };
-
-
 
 
   return (

@@ -2,11 +2,15 @@ import React, { useState, useEffect } from 'react';
 import './ProductList.css'
 import CartItem from './CartItem';
 import { addItem } from './CartSlice';
+import { useDispatch } from 'react-redux';
+
 
 function ProductList({ onHomeClick }) {
     const [showCart, setShowCart] = useState(false);
-    const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
+    const [showPlants, setShowPlants] = useState(true); // State to control the visibility of the About Us page
     const [addedToCart, setAddedToCart] = useState({});
+
+    const dispatch = useDispatch();
 
     const plantsArray = [
         {
@@ -222,7 +226,7 @@ function ProductList({ onHomeClick }) {
         padding: '15px',
         display: 'flex',
         justifyContent: 'space-between',
-        alignIems: 'center',
+        alignItems: 'center',
         fontSize: '20px',
     }
     
@@ -247,6 +251,7 @@ function ProductList({ onHomeClick }) {
     const handleCartClick = (e) => {
         e.preventDefault();
         setShowCart(true); // Set showCart to true when cart icon is clicked
+        setShowPlants(false);
     };
     
     const handlePlantsClick = (e) => {
@@ -258,6 +263,7 @@ function ProductList({ onHomeClick }) {
     const handleContinueShopping = (e) => {
         e.preventDefault();
         setShowCart(false);
+        setShowPlants(true);
     };
 
     const handleAddToCart = (product) => {
